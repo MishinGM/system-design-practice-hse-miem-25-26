@@ -6,9 +6,9 @@
 
 Скриншот вывода `patronictl list`:  
 
-```md
+
 ![alt text](image.png)
-```
+
 
 **Вывод по кластеру:**  
 - Кластер `demo` состоит из 3 PostgreSQL нод под управлением Patroni: `patroni1`, `patroni2`, `patroni3`.  
@@ -23,9 +23,9 @@
 
 Скриншот страницы статистики HAProxy:  
 
-```md
+
 ![alt text](image-1.png)
-```
+
 
 **Выводы:**  
 - HAProxy показывает фронтенды/бэкенды и состояние health-check.  
@@ -45,16 +45,16 @@
 
 Скриншот: master + `pg_is_in_recovery()` + select из events после прогона SQL-скрипта из задания:  
 
-```md
+
 ![alt text](image-2.png)
 
-```
+
 Скриншот: replica + `pg_is_in_recovery()` + select из events после прогона SQL-скрипта из задания
 
-```md
+
 ![alt text](image-3.png)
 
-```
+
 
 
 ## Шаг 4. Traffic generator 
@@ -62,11 +62,11 @@
 
 Скриншот stdout скрипта:  
 
-```md
+
 ![alt text](image-4.png)
 
 ![alt text](image-5.png)
-```
+
 
 **Наблюдение:**  
 - Запись идёт в master (через HAProxy write-порт).  
@@ -79,38 +79,38 @@
 
 Скриншоты:
 - После остановки лидера (видно нового Leader): 
-```md
+
 ![alt text](image-6.png)
 ![alt text](image-7.png)
-```
+
 
 **Вывод:** лидер переизбирается автоматически. Клиент продолжает работать через HAProxy.
 
 ### 5.2 Отключение реплики
-```
+
 ![alt text](image-8.png)
 ![alt text](image-9.png)
-```
+
 **Вывод:** запись в master продолжает работать, но снижается отказоустойчивость и уменьшается количество реплик для чтения.
 
 ### 5.3 Отключение etcd-ноды
-```
+
 ![alt text](image-10.png)
 ![alt text](image-11.png)
-```
+
 **Вывод:** при кворуме (2 из 3) кластер продолжает работать. Если выключить 2 etcd-ноды — DCS станет недоступен, и автоматическое управление нарушится.
 
 ### 5.4 Отключение HAProxy
-```
+
 ![alt text](image-12.png)
-```
+
 **Вывод:** приложение, которые подключаются только через HAProxy, потеряют точку входа - это SPOF балансировщика. В проде обычно делают 2 HAProxy + VIP (Keepalived) или внешний LB.
 
 Скриншоты HAProxy при failover:  
-```
+
 ![alt text](image-13.png)
 ![alt text](image-14.png)
-```
+
 
 ---
 
